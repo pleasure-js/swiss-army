@@ -1,0 +1,25 @@
+{
+  "name": "pleasure-swiss-army",
+  "author": "Martin Rafael <tin@devtin.io>",
+  "version": "1.0.0",
+  "main": "dist/pleasure-swiss-army.js",
+  "module": "dist/pleasure-swiss-army.esm.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "build:live": "nodemon -w src --exec yarn build",
+    "build:docs": "jsdoc2md --template README.hbs --files dist/pleasure-swiss-army.js > README.md"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^5.0.2",
+    "nodemon": "^1.19.4",
+    "rollup": "^1.26.0",
+    "rollup-plugin-alias": "^2.2.0",
+    "rollup-plugin-babel-minify": "^9.1.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-json": "^4.0.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}
