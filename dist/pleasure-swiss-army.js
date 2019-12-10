@@ -61,9 +61,9 @@ function obj2ArgsArray (obj) {
  * @throws {Error} stderr output if any
  */
 
-function exec (command, { args, env = process.env, cwd = process.cwd(), progress } = {}) {
+function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
   return new Promise((resolve, reject) => {
-    const cmdArgs = (command || '').split(' ').concat(Cli.obj2ArgsArray(args)).filter(Boolean);
+    const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean);
     const cmd = child_process.spawn(cmdArgs[0], cmdArgs.slice(1), {
       cwd,
       env
