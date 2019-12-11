@@ -82,12 +82,14 @@ function exec (command, { args = {}, env = process.env, cwd = process.cwd(), pro
     });
 
     cmd.stderr.on('data', (comingError) => {
+      debugging && console.log(`pleasure-swiss-army~cli~exec::error`, comingError);
       errors.push(comingError.toString());
     });
 
     cmd.on('error', error => reject({ error, errors }));
 
     cmd.on('exit', () => {
+      debugging && console.log(`pleasure-swiss-army~cli~exec::exit`, { result: result.join(`\n`), errors: errors.join(`\n`) });
       resolve({ result: result.join(`\n`), errors: errors.join(`\n`) });
     });
   })
