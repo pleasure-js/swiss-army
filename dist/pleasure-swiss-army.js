@@ -12,6 +12,12 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var kebabCase = _interopDefault(require('lodash/kebabCase'));
 var child_process = require('child_process');
 
+function debug (d) {
+  exports.debugging = !!d;
+}
+
+exports.debugging = false;
+
 /**
  * @module pleasure-swiss-army/Cli
  * @desc Set of utilities for cli applications
@@ -64,6 +70,9 @@ function obj2ArgsArray (obj) {
 function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
   return new Promise((resolve, reject) => {
     const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean);
+    if (exports.debugging) {
+      console.log(cmdArgs);
+    }
     const cmd = child_process.spawn(cmdArgs[0], cmdArgs.slice(1), {
       cwd,
       env
@@ -97,3 +106,4 @@ var cli = /*#__PURE__*/Object.freeze({
 });
 
 exports.Cli = cli;
+exports.debug = debug;

@@ -5,6 +5,8 @@
 
 import * as Cli from 'lib/cli.js'
 
+export { debugging, debug } from 'utils/debug.js'
+
 export {
   Cli
 }

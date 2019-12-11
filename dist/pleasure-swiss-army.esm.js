@@ -6,6 +6,12 @@
 import kebabCase from 'lodash/kebabCase';
 import { spawn } from 'child_process';
 
+function debug (d) {
+  debugging = !!d;
+}
+
+let debugging = false;
+
 /**
  * @module pleasure-swiss-army/Cli
  * @desc Set of utilities for cli applications
@@ -58,6 +64,9 @@ function obj2ArgsArray (obj) {
 function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
   return new Promise((resolve, reject) => {
     const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean);
+    if (debugging) {
+      console.log(cmdArgs);
+    }
     const cmd = spawn(cmdArgs[0], cmdArgs.slice(1), {
       cwd,
       env
@@ -90,4 +99,4 @@ var cli = /*#__PURE__*/Object.freeze({
   exec: exec
 });
 
-export { cli as Cli };
+export { cli as Cli, debug, debugging };

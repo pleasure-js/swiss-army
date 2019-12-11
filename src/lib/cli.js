@@ -1,5 +1,6 @@
 import kebabCase from 'lodash/kebabCase'
 import { spawn } from 'child_process'
+import { debugging } from 'utils/debug.js'
 
 /**
  * @module pleasure-swiss-army/Cli
@@ -53,6 +54,9 @@ export function obj2ArgsArray (obj) {
 export function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
   return new Promise((resolve, reject) => {
     const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean)
+    if (debugging) {
+      console.log(cmdArgs)
+    }
     const cmd = spawn(cmdArgs[0], cmdArgs.slice(1), {
       cwd,
       env
