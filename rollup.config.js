@@ -18,6 +18,10 @@ const plugins = [
       {
         find: 'lib',
         replacement: fromSrc('lib')
+      },
+      {
+        find: 'utils',
+        replacement: fromSrc('utils')
       }
     ]
   }),
