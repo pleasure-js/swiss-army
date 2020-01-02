@@ -1,5 +1,5 @@
 {
-  "name": "pleasure-swiss-army",
+  "name": "@pleasure-js/swiss-army",
   "author": "Martin Rafael <tin@devtin.io>",
   "version": "1.0.0",
   "main": "dist/pleasure-swiss-army.js",

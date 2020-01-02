@@ -1,6 +1,16 @@
-import kebabCase from 'lodash/kebabCase'
-import { spawn } from 'child_process'
-import { debugging } from 'utils/debug.js'
+/*!
+ * @pleasure-js/swiss-army v1.0.0
+ * (c) 2019-2020 Martin Rafael <tin@devtin.io>
+ * MIT
+ */
+import kebabCase from 'lodash/kebabCase';
+import { spawn } from 'child_process';
+
+function debug (d) {
+  debugging = !!d;
+}
+
+let debugging = false;
 
 /**
  * @module pleasure-swiss-army/Cli
@@ -25,11 +35,11 @@ import { debugging } from 'utils/debug.js'
  * // outputs: ['--no-lockfile', '--json']
  * ```
  */
-export function obj2ArgsArray (obj) {
-  const args = []
+function obj2ArgsArray (obj) {
+  const args = [];
   Object.keys(obj).forEach(arg => {
-    obj[arg] && args.push(`--${ kebabCase(arg) }`)
-  })
+    obj[arg] && args.push(`--${ kebabCase(arg) }`);
+  });
   return args
 }
 
@@ -51,36 +61,44 @@ export function obj2ArgsArray (obj) {
  * @throws {Error} stderr output if any
  */
 
-export function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
+function exec (command, { args = {}, env = process.env, cwd = process.cwd(), progress } = {}) {
   return new Promise((resolve, reject) => {
-    const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean)
+    const cmdArgs = (command || '').split(' ').concat(obj2ArgsArray(args)).filter(Boolean);
     if (debugging) {
-      console.log(`pleasure-swiss-army~cli~exec::cmdArgs`, cmdArgs)
+      console.log(`pleasure-swiss-army~cli~exec::cmdArgs`, cmdArgs);
     }
     const cmd = spawn(cmdArgs[0], cmdArgs.slice(1), {
       cwd,
       env
-    })
+    });
 
-    const result = []
-    const errors = []
+    const result = [];
+    const errors = [];
 
     cmd.stdout.on('data', (comingData) => {
-      comingData = comingData.toString()
-      result.push(comingData)
-      progress && progress(comingData)
-    })
+      comingData = comingData.toString();
+      result.push(comingData);
+      progress && progress(comingData);
+    });
 
     cmd.stderr.on('data', (comingError) => {
-      debugging && console.log(`pleasure-swiss-army~cli~exec::error`, comingError)
-      errors.push(comingError.toString())
-    })
+      debugging && console.log(`pleasure-swiss-army~cli~exec::error`, comingError);
+      errors.push(comingError.toString());
+    });
 
-    cmd.on('error', error => reject({ error, errors }))
+    cmd.on('error', error => reject({ error, errors }));
 
     cmd.on('exit', () => {
-      debugging && console.log(`pleasure-swiss-army~cli~exec::exit`, { result: result.join(`\n`), errors: errors.join(`\n`) })
-      resolve({ result: result.join(`\n`), errors: errors.join(`\n`) })
-    })
+      debugging && console.log(`pleasure-swiss-army~cli~exec::exit`, { result: result.join(`\n`), errors: errors.join(`\n`) });
+      resolve({ result: result.join(`\n`), errors: errors.join(`\n`) });
+    });
   })
 }
+
+var cli = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  obj2ArgsArray: obj2ArgsArray,
+  exec: exec
+});
+
+export { cli as Cli, debug, debugging };
